@@ -2,6 +2,7 @@ package com.onebill.kyc.repository;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -25,6 +26,12 @@ public interface CustomerDetailsRepository extends JpaRepository<CustomerDetails
 	
 	@Query(value = "select * from customer_details where active != 0", nativeQuery = true)
 	List<CustomerDetails> getAll();
+	
+	@Query(value = "select email from mails where email = :mail", nativeQuery = true)
+	Optional<CustomerDetails> checkEmail(@Param("mail") String mail);
+	
+	@Query(value = "select number from numbers where number = :num", nativeQuery = true)
+	Optional<CustomerDetails> checkNumber(@Param("num") Long num);
 	
 	
 }
