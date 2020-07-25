@@ -27,6 +27,15 @@ public class CustomerDetailsController {
 	@Autowired
 	CustomerDetailsService customerDetailsService;
 
+	/**
+	 * Controller Method to add a customer's details into database
+	 * 
+	 * @param cus
+	 * @param idProof
+	 * @param addressProof
+	 * @return added customer's details
+	 * @throws IOException
+	 */
 	@PostMapping("/addCustomer")
 	public ResponseEntity<CustomerDetails> addCustomer(@RequestParam("value") String cus,
 			@RequestParam("idProof") MultipartFile idProof, @RequestParam("addressProof") MultipartFile addressProof)
@@ -38,12 +47,28 @@ public class CustomerDetailsController {
 				HttpStatus.ACCEPTED);
 	}
 
+	
+	/**
+	 * 
+	 * Controller Method to get list of all customers
+	 * 
+	 * @return List of all active customers in database
+	 */
 	@GetMapping("/getCustomers")
 	public ResponseEntity<List<CustomerDetails>> getCustomers() {
 		return new ResponseEntity<List<CustomerDetails>>(customerDetailsService.getAllCustomers(), HttpStatus.FOUND);
 	}
 	
-	
+	/**
+	 * 
+	 * Controller Method to update the details of an existing customer
+	 * 
+	 * @param cus
+	 * @param idProof
+	 * @param addressProof
+	 * @return updated details of customer
+	 * @throws IOException
+	 */
 	@PutMapping("/updateCustomer") 
 	public ResponseEntity<CustomerDetails> updateCustomer(@RequestParam("value") String cus,
 			@RequestParam("idProof") MultipartFile idProof, @RequestParam("addressProof") MultipartFile addressProof)
@@ -55,6 +80,13 @@ public class CustomerDetailsController {
 				HttpStatus.ACCEPTED);
 	}	
 
+	
+	/**
+	 * Controller Method to set a customer as inactive
+	 * 
+	 * @param id
+	 * @return details of deactivated customer
+	 */
 	@DeleteMapping("/deleteCustomer/{id}")
 	public ResponseEntity<CustomerDetails> deleteCustomer(@PathVariable Integer id) {
 		return new ResponseEntity<CustomerDetails>(customerDetailsService.deleteCustomer(id), HttpStatus.ACCEPTED);

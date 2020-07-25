@@ -40,21 +40,25 @@ public class CustomerDetails implements Serializable {
 		this.active = true;		
 	}	
 	
-//	public CustomerDetails(Integer cusId, String firstName, String lastName, String dob, String addressProof,
-//			String idProof, Boolean active, List<Mails> emails,
-//			List<Numbers> numbers, List<Address> address) {
-//		this.cusId = cusId;
-//		this.firstName = firstName;
-//		this.lastName = lastName;
-//		this.dob = dob;
-//		this.addressProof = addressProof;
-//		this.idProof = idProof;
-//		this.active = active;
-//		this.emails = emails;
-//		this.numbers = numbers;
-//		this.address = address;
-//	}
 	
+	
+	public CustomerDetails(Integer cusId, String firstName, String lastName, String dob, byte[] addressProof,
+			byte[] idProof, Boolean active, List<Mails> emails, List<Numbers> numbers, List<Address> address) {
+		super();
+		this.cusId = cusId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dob = LocalDate.parse(dob);
+		this.addressProof = addressProof;
+		this.idProof = idProof;
+		this.active = active;
+		this.emails = emails;
+		this.numbers = numbers;
+		this.address = address;
+	}
+
+
+
 	@OneToMany(mappedBy = "customerDetails", cascade = CascadeType.ALL)
 	private List<Mails> emails;
 
@@ -65,6 +69,12 @@ public class CustomerDetails implements Serializable {
 	private List<Address> address;
 
 	
+	/**
+	 * 
+	 * Mapping the emails, numbers and addresses to the current customer object
+	 * 
+	 * @param i
+	 */
 	public void setListsSelf(Integer i) {
 		
 		if ( i != null)	this.cusId = i + 1;

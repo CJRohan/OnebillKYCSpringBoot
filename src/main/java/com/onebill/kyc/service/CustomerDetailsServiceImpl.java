@@ -21,7 +21,6 @@ public class CustomerDetailsServiceImpl implements CustomerDetailsService {
 		validateCustomer(customerDetails);
 		
 		customerDetails.setListsSelf(customerDetailsRepository.getLastId());
-		System.out.println("\n" + customerDetails + "\n");
 		
 		return customerDetailsRepository.save(customerDetails);
 	}
@@ -44,9 +43,9 @@ public class CustomerDetailsServiceImpl implements CustomerDetailsService {
 		validateCustomer(customerDetails);
 		
 		customerDetails.setListsSelf(customerDetails.getCusId()-1);
-		System.out.println(customerDetails);
-		customerDetailsRepository.save(customerDetails);
-		return null;
+
+		return customerDetailsRepository.save(customerDetails);
+		
 	}
 	
 	
@@ -56,6 +55,7 @@ public class CustomerDetailsServiceImpl implements CustomerDetailsService {
 	 * @param customerDetails
 	 */
 	private void validateCustomer(CustomerDetails customerDetails) {
+		
 		if (customerDetails.getFirstName() == null) {
 			throw new RuntimeException("First Name required");
 		}
@@ -63,7 +63,10 @@ public class CustomerDetailsServiceImpl implements CustomerDetailsService {
 		for (Mails mail : customerDetails.getEmails()) {
 
 			if (customerDetailsRepository.checkEmail(mail.getEmail()).isPresent()) {
-				throw new RuntimeException("Duplicate Email");
+				throw new RuntimeException("Duplicate Email: " + mail.getEmail());
+			}
+			if (!mail.getEmail().matches("^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z]+(.com|.in|.co.in)$")) {
+				throw new RuntimeException("Invalid Email Syntax: " + mail.getEmail());
 			}
 
 		}
@@ -71,7 +74,7 @@ public class CustomerDetailsServiceImpl implements CustomerDetailsService {
 		for (Numbers num : customerDetails.getNumbers()) {
 
 			if (customerDetailsRepository.checkNumber(num.getNumber()).isPresent()) {
-				throw new RuntimeException("Duplicate Number");
+				throw new RuntimeException("Duplicate Number: " + num.getNumber());
 			}
 
 		}
